@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DocketDial — Your time, on record.</title>
+  <meta name="description" content="Turn calls, email, texts, and calendar activity into editable time entries by client and matter. Get DocketDial for Copilot Cowork, Claude Cowork, or Codex.">
+  <meta name="theme-color" content="#0b1021">
+  <link rel="icon" href="assets/mark.webp" type="image/webp">
+  <link rel="preload" href="fonts/instrument-serif.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="assets/gold-stopwatch.webp" as="image">
+  <link rel="stylesheet" href="style.css">
+  <link rel="alternate" type="text/markdown" title="DocketDial installation instructions for agents" href="install.md">
+  <script defer src="app.js"></script>
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to content</a>
+<header class="mast">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="DocketDial home"><img src="assets/mark.webp" width="38" height="31" alt="">DocketDial</a>
+    <nav aria-label="Main navigation"><a href="#example">How it works</a><a href="#install">Install</a><a class="nav-git" href="#repository">GitHub <span aria-hidden="true">↓</span></a></nav>
+  </div>
+</header>
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-image" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <p class="eyebrow gold"><i></i> A timekeeping skill for lawyers</p>
+      <h1 id="hero-title">Your time,<br><em>on record.</em></h1>
+      <p class="lead">Turn emails, calls, texts, and calendar activity into a draft docket by client and matter. You review every entry.</p>
+      <div class="actions"><a class="button primary" href="#install">Get the skill <span aria-hidden="true">↓</span></a><a class="text-link light" href="#example">See a sample docket <span aria-hidden="true">↘</span></a></div>
+    </div>
+    <div class="compat"><div class="wrap compat-inner"><span class="label">Works with</span><span>Microsoft 365 Copilot Cowork</span><i></i><span>Claude Cowork</span><i></i><span>Codex</span></div></div>
+  </section>
+  <section class="demo section" id="example" aria-labelledby="demo-title">
+    <div class="wrap">
+      <div class="section-intro"><div><p class="eyebrow ink"><i></i> How it works</p><h2 id="demo-title">A day in the <em>docket.</em></h2></div><p>Select a record from this fictional workday to see the entry a lawyer would review.</p></div>
+      <div class="desk">
+        <div class="records"><h3>Activity log</h3>
+          <div class="record-list" aria-label="Example activity records">
+            <button type="button" class="record active" data-record="call" aria-pressed="true"><span class="time">10:04</span><span><strong>Client call</strong><small>Phone log + matter reference</small></span><span class="arrow" aria-hidden="true">↗</span></button>
+            <button type="button" class="record" data-record="email" aria-pressed="false"><span class="time">11:18</span><span><strong>Revised clause sent</strong><small>Sent email</small></span><span class="arrow" aria-hidden="true">↗</span></button>
+            <button type="button" class="record" data-record="meeting" aria-pressed="false"><span class="time">14:00</span><span><strong>Closing meeting</strong><small>Calendar + existing time entry</small></span><span class="arrow" aria-hidden="true">↗</span></button>
+          </div>
+        </div>
+        <article class="draft" aria-live="polite" aria-atomic="true">
+          <div class="draft-head"><span class="label">Draft time entry</span><span class="state" id="entry-state">Proposed</span></div>
+          <p class="matter" id="entry-matter">Alder Mill · AM-12</p>
+          <h3 id="entry-title">Discuss purchase agreement with client.</h3>
+          <div class="measure"><span id="entry-duration">12m 40s</span><small id="entry-basis">connected call</small></div>
+          <p id="entry-note">The call log records the duration. A text identifies the matter. Both support one entry.</p>
+        </article>
+      </div>
+      <noscript><p>The selected call shows one draft. The email needs a duration from the lawyer. The closing meeting matches an existing entry and adds no new time.</p></noscript>
+    </div>
+  </section>
+  <section class="setup section" id="install" aria-labelledby="install-title">
+    <div class="wrap">
+      <div class="section-intro"><div><p class="eyebrow ink"><i></i> Installation</p><h2 id="install-title">Get <em>DocketDial.</em></h2></div><p>Choose your assistant. Download the skill yourself or copy a setup request for your agent.</p></div>
+      <div class="platforms" aria-label="Choose your assistant">
+        <a class="platform active" href="#copilot" data-platform="copilot">Copilot Cowork</a>
+        <a class="platform" href="#claude" data-platform="claude">Claude Cowork</a>
+        <a class="platform" href="#codex" data-platform="codex">Codex</a>
+      </div>
+      <div id="platform-panels">
+        <!-- INSTALL_PANELS -->
+      </div>
+      <a class="agent-guide" href="install.md">Read the installation instructions for agents <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+  <section class="repository section" id="repository" aria-labelledby="repo-title">
+    <div class="wrap repo-grid">
+      <div><p class="eyebrow gold"><i></i> GitHub repository</p><h2 id="repo-title">Inside the <em>repo.</em></h2><p class="repo-copy">Read the instructions your assistant follows, see what changed, or open an issue.</p></div>
+      <article class="git-card" aria-label="DocketDial GitHub repository">
+        <div class="git-head"><span class="git-brand">GitHub</span><span class="public">Public</span></div>
+        <h3><a href="https://github.com/m66se/docketdial">m66se<span> / </span>docketdial <b aria-hidden="true">↗</b></a></h3>
+        <p>Legal timekeeping skills for Cowork and Codex.</p>
+        <div class="git-stats"><a href="https://github.com/m66se/docketdial/stargazers">Stars <strong id="stars">↗</strong></a><a href="https://github.com/m66se/docketdial/forks">Forks <strong id="forks">↗</strong></a><a href="https://github.com/m66se/docketdial/issues">Issues <span aria-hidden="true">↗</span></a></div>
+        <a class="repo-open" href="https://github.com/m66se/docketdial">View repository <span aria-hidden="true">→</span></a>
+      </article>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap footer-inner"><a class="brand" href="#top"><img src="assets/mark.webp" width="30" height="25" alt="">DocketDial</a><span>docketdial.ai</span><a href="#top">Back to top ↑</a></div></footer>
+</body></html>
