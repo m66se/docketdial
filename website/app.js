@@ -84,11 +84,61 @@ async function loadRepository() {
     });
     if (!response.ok) return;
     const repo = await response.json();
-    for (const [key, value] of [["stars", repo.stargazers_count], ["forks", repo.forks_count]]) {
-      if (Number.isSafeInteger(value) && value >= 0) byId(key).textContent = value.toLocaleString();
+    if (Number.isSafeInteger(repo.stargazers_count) && repo.stargazers_count >= 0) {
+      byId("stars").textContent = repo.stargazers_count.toLocaleString();
+      byId("star-unit").textContent = repo.stargazers_count === 1 ? " star" : " stars";
+      byId("repo-stars").hidden = false;
     }
   } catch {
-    // The direct GitHub links remain usable offline or when the API is rate limited.
+    // The repository badge remains a direct link if counts are unavailable.
   }
 }
 loadRepository();
+
+
+const walkthrough = document.querySelector(".walkthrough");
+const scenes = [...walkthrough.querySelectorAll(".scene")];
+const steps = [...walkthrough.querySelectorAll(".step-list button")];
+const playButton = walkthrough.querySelector(".motion-toggle");
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+let playing = !reducedMotion.matches;
+let currentStep = 0;
+let timer;
+
+function scheduleWalkthrough() {
+  window.clearTimeout(timer);
+  if (playing && !document.hidden) {
+    timer = window.setTimeout(() => {
+      showStep((currentStep + 1) % scenes.length);
+      scheduleWalkthrough();
+    }, 6200);
+  }
+}
+
+function showStep(index) {
+  currentStep = index;
+  scenes.forEach((scene, i) => {
+    scene.hidden = i !== index;
+    steps[i].setAttribute("aria-pressed", String(i === index));
+  });
+}
+
+function setPlayback(on) {
+  playing = on;
+  walkthrough.classList.toggle("playing", on);
+  playButton.dataset.paused = String(!on);
+  const label = on ? "Pause walkthrough" : "Play walkthrough";
+  playButton.setAttribute("aria-label", label);
+  playButton.title = label;
+  scheduleWalkthrough();
+}
+
+steps.forEach((button, index) => button.addEventListener("click", () => {
+  setPlayback(false);
+  showStep(index);
+}));
+playButton.addEventListener("click", () => setPlayback(!playing));
+document.addEventListener("visibilitychange", scheduleWalkthrough);
+reducedMotion.addEventListener("change", event => setPlayback(!event.matches));
+walkthrough.querySelector(".walk-controls").hidden = false;
+setPlayback(playing);

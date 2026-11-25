@@ -3,6 +3,7 @@
 Run from anywhere with: python3 website/build.py OUTPUT_DIRECTORY HOSTING_ZIP
 """
 import argparse
+import json
 import shutil
 import zipfile
 from html import escape
@@ -11,6 +12,21 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 REPO = "https://github.com/m66se/docketdial"
+SITE = "https://docketdial.ai/"
+QUESTIONS = [
+    ("What is DocketDial?",
+     "DocketDial is a legal timekeeping skill for Microsoft 365 Copilot Cowork. It uses work records you provide or authorize to draft editable time entries by client and matter. Versions are also available for Claude Cowork and Codex."),
+    ("How do I turn phone screenshots into a time entry?",
+     "Capture the call detail with its connected duration and the text identifying the work. In a new Copilot Cowork task, paste the screenshots if your app accepts image paste, or choose Upload images and files. Add your matter directory and ask DocketDial to match the records and draft your time."),
+    ("How does it match a phone number to the right client file?",
+     "DocketDial checks the full phone number against your contact directory, then uses a matter ID or a distinctive reference in the conversation to identify the file. If a client has multiple plausible matters, the draft flags the choice for you."),
+    ("Does DocketDial count time between text messages?",
+     "A gap between messages does not establish time worked. A connected call log can supply a measured duration. When reading or drafting time is unknown, DocketDial leaves it open for you to confirm."),
+    ("Can it check whether I already entered the time?",
+     "Provide existing time entries for the same period. DocketDial compares them with the activity, marks matches as already recorded, and flags possible overlaps for review."),
+    ("Where do I put client records?",
+     "Supply your screenshots and matter directory inside your firm’s approved assistant workspace. This website provides downloads and a fictional demonstration. You review the proposed time before posting it to your billing system.")
+]
 PLATFORMS = {
     "copilot": {
         "name": "Microsoft 365 Copilot Cowork",
@@ -63,7 +79,33 @@ def build(output, archive_path):
     for name in ("style.css", "app.js"):
         shutil.copyfile(HERE / name, output / name)
     template = (HERE / "index.html").read_text()
-    (output / "index.html").write_text(template.replace("<!-- INSTALL_PANELS -->", "\n".join(panel(k, p) for k, p in PLATFORMS.items())))
+    faq_html = '<div class="faq-list">' + "\n".join(
+        f"<section><h3>{escape(question)}</h3><p>{escape(answer)}</p></section>"
+        for question, answer in QUESTIONS
+    ) + "</div>"
+    structured = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {"@type": "SoftwareApplication", "@id": SITE + "#skill", "name": "DocketDial",
+             "url": SITE, "description": QUESTIONS[0][1], "applicationCategory": "BusinessApplication",
+             "softwareRequirements": [p["name"] for p in PLATFORMS.values()],
+             "downloadUrl": [SITE + "downloads/DocketDial.md", SITE + "downloads/docketdial.zip"]},
+            {"@type": "FAQPage", "@id": SITE + "#questions", "about": {"@id": SITE + "#skill"},
+             "mainEntity": [
+                 {"@type": "Question", "name": question, "acceptedAnswer": {"@type": "Answer", "text": answer}}
+                 for question, answer in QUESTIONS
+             ]}
+        ]
+    }
+    page = template.replace("<!-- INSTALL_PANELS -->", "\n".join(panel(k, p) for k, p in PLATFORMS.items()))
+    page = page.replace("<!-- QUESTIONS -->", faq_html)
+    page = page.replace("<!-- STRUCTURED_DATA -->", '<script type="application/ld+json">' + json.dumps(structured) + '</script>')
+    (output / "index.html").write_text(page)
+    (output / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}sitemap.xml\n")
+    (output / "sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>{SITE}</loc></url></urlset>\n'
+    )
     downloads = output / "downloads"
     downloads.mkdir()
     shutil.copyfile(ROOT / "copilot" / "DocketDial.md", downloads / "DocketDial.md")
