@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="skills/docketdial/assets/docketdial.png" width="400" alt="DocketDial, a navy double-D pocket watch with a gold crown">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="skills/docketdial/assets/docketdial-dark.png">
+    <img src="skills/docketdial/assets/docketdial.png" width="400" alt="DocketDial, a double-D pocket watch with a gold crown">
+  </picture>
 </p>
 
 # DocketDial
@@ -13,8 +16,16 @@ Ask for a day or a billing period. DocketDial groups the work it can substantiat
 | Where you work | How to add DocketDial |
 | --- | --- |
 | Microsoft 365 Copilot Cowork | Open [DocketDial.md](copilot/DocketDial.md) and choose **Download raw file** on GitHub. In Cowork, open **Customize → Skills**, then the arrow beside **Add → Upload skill**. Select the downloaded file. [Microsoft’s guide](https://learn.microsoft.com/en-us/copilot/cowork/use-cowork#upload-a-skill) |
-| Codex | Copy the [docketdial folder](skills/docketdial) into `~/.agents/skills/`. Start a prompt with `$docketdial`. [Codex skills guide](https://developers.openai.com/codex/skills/) |
+| Codex | Copy the [docketdial folder](skills/docketdial) into `~/.agents/skills/`. [Codex skills guide](https://developers.openai.com/codex/skills/) |
 | Claude Cowork | Download the repository, unzip it, then zip just the [docketdial folder](skills/docketdial) with `docketdial/SKILL.md` inside the archive. Upload that ZIP in **Customize → Skills** and enable it. [Claude’s guide](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills) |
+
+## Run DocketDial
+
+| Where you work | How to start a docket |
+| --- | --- |
+| Claude Cowork | Type `/docketdial Draft my dockets for yesterday.` [Claude’s skill guide](https://academy.claude.com/tutorials/customize-claude-cowork) |
+| Microsoft 365 Copilot Cowork | In a new task, type `/` to open the picker. If the **Skills** tab is available, select **Skills → docketdial**, then enter `Draft my dockets for yesterday.` You can also type `Use DocketDial to draft my dockets for yesterday.` Check **Skills** in the session side panel to see what loaded. [Cowork guide](https://learn.microsoft.com/en-us/copilot/cowork/use-cowork) · [Picker screenshot](https://uds.systems/media/3tsofibk/screenshot_4.webp) |
+| Codex | Type `$docketdial Draft my dockets for yesterday.` |
 
 In your firm’s approved workspace, give the assistant access to the relevant work records or attach exports. For phone activity, attach call-log or message screenshots that show the event date and time. Include a matter list with client, matter ID, matter name, contact, full phone number, and email where available. Add existing time entries to check for duplicates. For fee subtotals, include the matter’s billing rules, rates, and currency.
 
