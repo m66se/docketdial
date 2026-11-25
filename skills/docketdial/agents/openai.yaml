@@ -1,0 +1,14 @@
+interface:
+  display_name: DocketDial
+  short_description: Draft legal time entries from work and phone records
+  default_prompt: Use $docketdial to reconstruct my day and draft editable time entries
+    by client and matter.
+  icon_small: "./assets/docketdial.png"
+  icon_large: "./assets/docketdial.png"
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true
