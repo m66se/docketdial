@@ -17,29 +17,28 @@ Ask for a day or a billing period. DocketDial groups the work it can substantiat
 | --- | --- |
 | Microsoft 365 Copilot Cowork | Open [DocketDial.md](copilot/DocketDial.md) and choose **Download raw file** on GitHub. In Cowork, open **Customize → Skills**, then the arrow beside **Add → Upload skill**. Select the downloaded file. [Microsoft’s guide](https://learn.microsoft.com/en-us/copilot/cowork/use-cowork#upload-a-skill) |
 | Codex | Copy the [docketdial folder](skills/docketdial) into `~/.agents/skills/`. [Codex skills guide](https://developers.openai.com/codex/skills/) |
-| Claude Cowork | Download the repository, unzip it, then zip just the [docketdial folder](skills/docketdial) with `docketdial/SKILL.md` inside the archive. Upload that ZIP in **Customize → Skills** and enable it. [Claude’s guide](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills) |
+| Claude | Download the [ready-to-upload skill ZIP](https://github.com/m66se/docketdial/releases/latest/download/docketdial.zip). Open **Plugins** (or **Customize → Skills**), choose the option to upload a skill, select the ZIP, and enable DocketDial. [Claude’s skill guide](https://support.claude.com/en/articles/12512180-use-skills-in-claude) |
 
 ## Run DocketDial
 
 | Where you work | How to start a docket |
 | --- | --- |
-| Claude Cowork | Type `/docketdial Draft my dockets for yesterday.` [Claude’s skill guide](https://academy.claude.com/tutorials/customize-claude-cowork) |
-| Microsoft 365 Copilot Cowork | In a new task, type `/` to open the picker. If the **Skills** tab is available, select **Skills → docketdial**, then enter `Draft my dockets for yesterday.` You can also type `Use DocketDial to draft my dockets for yesterday.` Check **Skills** in the session side panel to see what loaded. [Cowork guide](https://learn.microsoft.com/en-us/copilot/cowork/use-cowork) · [Picker screenshot](https://uds.systems/media/3tsofibk/screenshot_4.webp) |
+| Claude | In a new conversation, type `/docketdial Draft my dockets for yesterday.` If your account still has separate Chat and Cowork modes, open Cowork first. [Claude’s rollout guide](https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude) |
+| Microsoft 365 Copilot Cowork | In a new task, type `/` to open the picker. If the **Skills** tab is available, select **Skills → docketdial**, then enter `Draft my dockets for yesterday.` You can also type `Use DocketDial to draft my dockets for yesterday.` Check **Skills** in the session side panel to see what loaded. [Cowork guide](https://learn.microsoft.com/en-us/copilot/cowork/use-cowork) |
 | Codex | Type `$docketdial Draft my dockets for yesterday.` |
 
 In your firm’s approved workspace, give the assistant access to the relevant work records or attach exports. For phone activity, attach call-log or message screenshots that show the event date and time. Include a matter list with client, matter ID, matter name, contact, full phone number, and email where available. Add existing time entries to check for duplicates. For fee subtotals, include the matter’s billing rules, rates, and currency.
 
 > Draft my dockets for yesterday from my sent email, calendar, and the phone screenshots I attached. Match them to my open matters, flag anything I already entered, and show me which entries still need a duration or matter.
 
-## What the draft looks like
+## Try a fictional workday
 
-Here’s a fictional example. A call log shows a connected call of 12 minutes and 40 seconds. Its number matches a contact on two files. A text from that contact identifies the purchase agreement for Alder Mill. A later email shows that the lawyer sent a revised clause on the same matter.
+[Try the Alder Mill example](examples/alder-mill/README.md) with two phone screenshots, a matter register, and a workday extract. Its first prompt works with the supplied files alone. After reviewing your draft, open the separate answer key or try the lawyer’s amendment.
 
-| ID | Client / matter | Draft narrative | Worked time | Review | Evidence |
-| --- | --- | --- | --- | --- | --- |
-| D1 | Alder Mill / AM-12 | Discuss purchase agreement with client | 12m 40s, connected call | Proposed | Call log, 10:04 and text identifying AM-12 |
-| D2 | Alder Mill / AM-12 | Send revised indemnity clause to client | | Needs duration | Sent email, 11:18 |
+The private review copy keeps the evidence alongside the entries. You can request an editable workbook or a client-facing draft containing only the entries you confirm.
 
-The call and the text support one entry. The email establishes what was sent and when. You can amend the second row by saying, “I spent 15 minutes revising and sending the clause. Update D2.” DocketDial then recalculates any fees it can support under the matter’s billing rules.
+## Build the downloads
 
-The private review copy keeps the evidence alongside the rows. You can ask for an editable workbook or a client-facing draft containing only the entries you confirmed. Posting time and issuing invoices stay with the timekeeper.
+Edit [SKILL.md](skills/docketdial/SKILL.md) for shared behavior and [copilot-section.md](scripts/copilot-section.md) for Microsoft-specific guidance. Run `python3 scripts/build.py` to refresh [DocketDial.md](copilot/DocketDial.md). Commit the generated file with its source changes.
+
+Run `python3 scripts/build.py --check --output dist` to check for drift and build both install files. To publish a release, add its notes under `release/` and update `release/VERSION` on the main branch. The release workflow validates the downloads, publishes them at that commit, and marks the version latest.
